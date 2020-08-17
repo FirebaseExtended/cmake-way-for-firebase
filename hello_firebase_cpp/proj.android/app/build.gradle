@@ -70,6 +70,7 @@ android {
             renderscriptDebuggable true
         }
     }
+    ndkVersion '21.2.6472646'
 }
 
 android.applicationVariants.all { variant ->
