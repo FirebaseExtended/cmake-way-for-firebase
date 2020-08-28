@@ -1,6 +1,7 @@
 import org.gradle.internal.os.OperatingSystem
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 
 android {
     compileSdkVersion PROP_COMPILE_SDK_VERSION.toInteger()
@@ -90,6 +91,15 @@ android.applicationVariants.all { variant ->
         }
     }
     tasks.getByName("pre${targetName}Build").dependsOn copyTaskName
+}
+
+android.defaultConfig.externalNativeBuild.cmake {
+    arguments "-DFIREBASE_CPP_SDK_DIR=$gradle.firebase_cpp_sdk_dir"
+}
+
+apply from: "$gradle.firebase_cpp_sdk_dir/Android/firebase_dependencies.gradle"
+firebaseCpp.dependencies {
+    auth
 }
 
 dependencies {

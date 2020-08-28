@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "152009130936",
+    "firebase_url": "https://cmakeway.firebaseio.com",
+    "project_id": "cmakeway",
+    "storage_bucket": "cmakeway.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152009130936:android:6ef53685117a787618854d",
+        "android_client_info": {
+          "package_name": "com.firebase.hello_firebase_cpp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152009130936-2e8tsc0i46d7csin6o8on21l23v0n3cl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBU-4YQAFGoFgpLRMKEOp8h8JP_bp3HO3A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152009130936-2e8tsc0i46d7csin6o8on21l23v0n3cl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,1 @@
+Download the C++ sdk from https://dl.google.com/firebase/sdk/cpp/firebase_cpp_sdk_6.15.1.zip

@@ -157,3 +157,6 @@ if(LINUX OR WINDOWS)
     cocos_get_resource_path(APP_RES_DIR ${APP_NAME})
     cocos_copy_target_res(${APP_NAME} LINK_TO ${APP_RES_DIR} FOLDERS ${GAME_RES_FOLDER})
 endif()
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/firebase_cpp_sdk)
+target_link_libraries(${APP_NAME} firebase_auth firebase_app)

@@ -48,6 +48,13 @@ bool HelloWorld::init()
         return false;
     }
 
+    _app = std::unique_ptr<firebase::App>(firebase::App::Create(JniHelper::getEnv(), JniHelper::getActivity()));
+    _auth = std::unique_ptr<firebase::auth::Auth>(firebase::auth::Auth::GetAuth(_app.get()));
+    _auth->SignInAnonymously().OnCompletion([](const firebase::Future<firebase::auth::User*> &result){
+        firebase::auth::User* pUser = *result.result();
+        printf("Signed in as %s", pUser->uid().c_str());
+    });
+
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 

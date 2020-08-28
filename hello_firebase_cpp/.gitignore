@@ -1,3 +1,4 @@
 cocos2d/cocos/platform/android/libcocos2dx/build
 proj.android/.idea
 proj.android/app/.cxx
+/build

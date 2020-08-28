@@ -27,6 +27,9 @@
 
 #include "cocos2d.h"
 
+#include <firebase/app.h>
+#include <firebase/auth.h>
+
 class HelloWorld : public cocos2d::Scene
 {
 public:
@@ -39,6 +42,10 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
+
+private:
+    std::unique_ptr<firebase::App> _app;
+    std::unique_ptr<firebase::auth::Auth> _auth;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
