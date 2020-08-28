@@ -114,19 +114,19 @@ bool HelloWorld::init()
         this->addChild(sprite, 0);
     }
 
-    _app = std::unique_ptr<firebase::App>(firebase::App::Create(JniHelper::getEnv(), JniHelper::getActivity()));
-    _auth = std::unique_ptr<firebase::auth::Auth>(firebase::auth::Auth::GetAuth(_app.get()));
-    _auth->SignInAnonymously().OnCompletion([label](const firebase::Future<firebase::auth::User*> &result){
-        std::stringstream sstream;
+    auto app = firebase::App::Create(JniHelper::getEnv(), JniHelper::getActivity());
+    auto auth = firebase::auth::Auth::GetAuth(app);
+    auth->SignInAnonymously().OnCompletion([label](const firebase::Future<firebase::auth::User*> &result){
+        std::stringstream message;
         auto error = result.error_message();
         if (strlen(error)) {
-            sstream << "Failed to sign in because " << error;
+            message << "Failed to sign in because " << error;
         }
         else {
             firebase::auth::User *pUser = *result.result();
-            sstream << "Signed in as " << pUser->uid();
+            message << "Signed in as " << pUser->uid();
         }
-        label->setString(sstream.str());
+        label->setString(message.str());
     });
 
     return true;

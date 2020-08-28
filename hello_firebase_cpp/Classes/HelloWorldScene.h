@@ -42,10 +42,6 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
-
-private:
-    std::unique_ptr<firebase::App> _app;
-    std::unique_ptr<firebase::auth::Auth> _auth;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
