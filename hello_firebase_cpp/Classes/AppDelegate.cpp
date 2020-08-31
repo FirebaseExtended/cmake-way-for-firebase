@@ -107,6 +107,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
+    firebase::App::Create(JniHelper::getEnv(), JniHelper::getActivity());
+
     // create a scene. it's an autorelease object
     auto scene = HelloWorld::createScene();
 
