@@ -31,7 +31,7 @@
 #include <firebase/app.h>
 #include <firebase/auth.h>
 
-class HelloWorld : public cocos2d::Scene
+class LoginScene : public cocos2d::Scene
 {
 public:
     static cocos2d::Scene* createScene();
@@ -39,7 +39,7 @@ public:
     virtual bool init();
     
     // implement the "static create()" method manually
-    CREATE_FUNC(HelloWorld);
+    CREATE_FUNC(LoginScene);
 };
 
 #endif // __HELLOWORLD_SCENE_H__

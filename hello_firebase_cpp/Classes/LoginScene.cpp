@@ -22,12 +22,12 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "HelloWorldScene.h"
+#include "LoginScene.h"
 
 USING_NS_CC;
 
-Scene *HelloWorld::createScene() {
-    return HelloWorld::create();
+Scene *LoginScene::createScene() {
+    return LoginScene::create();
 }
 
 // Print useful error message instead of segfaulting when files are not there.
@@ -37,7 +37,7 @@ static void problemLoading(const char *filename) {
 }
 
 // on "init" you need to initialize your instance
-bool HelloWorld::init() {
+bool LoginScene::init() {
     // 1. super init first
     if (!Scene::init()) {
         return false;
@@ -57,7 +57,7 @@ bool HelloWorld::init() {
         this->addChild(label, 1);
     }
 
-    // add "HelloWorld" splash screen"
+    // add "LoginScene" splash screen"
     auto sprite = Sprite::create("sparky.png");
     if (sprite == nullptr) {
         problemLoading("'sparky.png'");
