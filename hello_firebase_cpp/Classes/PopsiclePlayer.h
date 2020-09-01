@@ -12,8 +12,13 @@ public:
     static PopsiclePlayer *createWithTexture(cocos2d::Texture2D *texture);
 
     virtual bool initWithTexture(cocos2d::Texture2D *texture) override;
+    virtual void cleanup() override;
 
 private:
+    cocos2d::EventListenerTouchOneByOne* _touchListener = nullptr;
+    cocos2d::PhysicsBody* _physicsBody = nullptr;
+
+    bool _jumping = false;
 };
 
 

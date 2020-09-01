@@ -19,7 +19,9 @@ bool PopsicleScene::init() {
         return false;
     }
 
-    this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    auto physicsWorld = this->getPhysicsWorld();
+    physicsWorld->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    physicsWorld->setGravity(Vec2(0, -98.f));
 
     auto director = Director::getInstance();
     auto visibleSize = director->getVisibleSize();

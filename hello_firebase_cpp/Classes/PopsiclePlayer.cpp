@@ -7,7 +7,7 @@
 USING_NS_CC;
 
 PopsiclePlayer *PopsiclePlayer::createWithTexture(Texture2D *texture) {
-    auto *player = new (std::nothrow) PopsiclePlayer();
+    auto *player = new(std::nothrow) PopsiclePlayer();
     if (player && player->initWithTexture(texture)) {
         player->autorelease();
         return player;
@@ -26,8 +26,42 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
 
     this->setAnchorPoint(Vec2(.5f, 0.f));
 
-    auto physicsBody = PhysicsBody::createBox(getContentSize());
-    addComponent(physicsBody);
+    _physicsBody = PhysicsBody::createBox(getContentSize());
+    _physicsBody->retain();
+    addComponent(_physicsBody);
+
+    _touchListener = EventListenerTouchOneByOne::create();
+    _touchListener->retain();
+    _touchListener->onTouchBegan = [this](Touch *touch, Event *event) {
+        log("Touch Began");
+        if (!_jumping && _physicsBody) {
+            _physicsBody->applyForce(Vec2(0, 1000 * _physicsBody->getMass()));
+            _physicsBody->setGravityEnable(false);
+            _jumping = true;
+            return true;
+        }
+        return false;
+    };
+    _touchListener->onTouchEnded = [this](Touch *touch, Event *event) {
+        log("Touch Ended");
+        if (_jumping) {
+            _jumping = false;
+            if (_physicsBody) {
+                _physicsBody->setGravityEnable(true);
+            }
+            return true;
+        }
+        return false;
+    };
+
+    // TODO: refactor this out
+    auto eventDispatcher = Director::getInstance()->getEventDispatcher();
+    eventDispatcher->addEventListenerWithSceneGraphPriority(_touchListener, this);
 
     return true;
+}
+
+void PopsiclePlayer::cleanup() {
+    CC_SAFE_RELEASE(_touchListener);
+    CC_SAFE_RELEASE(_physicsBody);
 }
