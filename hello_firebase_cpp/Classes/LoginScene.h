@@ -40,6 +40,9 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(LoginScene);
+
+private:
+    void continueClicked();
 };
 
 #endif // __HELLOWORLD_SCENE_H__

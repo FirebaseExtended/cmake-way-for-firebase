@@ -24,6 +24,8 @@
 
 #include "LoginScene.h"
 
+#include "CupcakePancakeScene.h"
+
 USING_NS_CC;
 
 Scene *LoginScene::createScene() {
@@ -96,7 +98,12 @@ bool LoginScene::init() {
     continueButton->setTitleText("Continue");
     continueButton->setAnchorPoint(Vec2(.5f, 0.f));
     continueButton->setPosition(Vec2(visibleSize.width / 2 + origin.x, origin.y));
+    continueButton->addClickEventListener(CC_CALLBACK_0(LoginScene::continueClicked, this));
     this->addChild(continueButton, 0);
 
     return true;
+}
+
+void LoginScene::continueClicked() {
+    Director::getInstance()->pushScene(CupcakePancakeScene::createScene());
 }
