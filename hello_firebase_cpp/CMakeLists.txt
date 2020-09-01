@@ -59,13 +59,13 @@ list(APPEND GAME_SOURCE
         Classes/AppDelegate.cpp
         Classes/LoginScene.cpp
         Classes/CupcakePancakeScene.cpp
-        Classes/FallingItem.cpp
+        Classes/PopsicleScene.cpp
         )
 list(APPEND GAME_HEADER
         Classes/AppDelegate.h
         Classes/LoginScene.h
         Classes/CupcakePancakeScene.h
-        Classes/FallingItem.h
+        Classes/PopsicleScene.h
         )
 
 if (ANDROID)

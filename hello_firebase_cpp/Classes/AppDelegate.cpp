@@ -24,6 +24,7 @@
 
 #include "AppDelegate.h"
 #include "LoginScene.h"
+#include "PopsicleScene.h"
 
 // #define USE_AUDIO_ENGINE 1
 
@@ -110,7 +111,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     firebase::App::Create(JniHelper::getEnv(), JniHelper::getActivity());
 
     // create a scene. it's an autorelease object
-    auto scene = LoginScene::createScene();
+//    auto scene = LoginScene::createScene();
+    auto scene = PopsicleScene::createScene();
 
     // run
     director->runWithScene(scene);
