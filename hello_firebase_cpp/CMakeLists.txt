@@ -60,12 +60,14 @@ list(APPEND GAME_SOURCE
         Classes/LoginScene.cpp
         Classes/CupcakePancakeScene.cpp
         Classes/PopsicleScene.cpp
+        Classes/PopsiclePlayer.cpp
         )
 list(APPEND GAME_HEADER
         Classes/AppDelegate.h
         Classes/LoginScene.h
         Classes/CupcakePancakeScene.h
         Classes/PopsicleScene.h
+        Classes/PopsiclePlayer.h
         )
 
 if (ANDROID)
