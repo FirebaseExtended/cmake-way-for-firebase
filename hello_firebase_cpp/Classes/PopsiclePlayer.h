@@ -18,10 +18,12 @@ public:
     virtual void cleanup() override;
 
 private:
+    void resetJumps();
+
     cocos2d::EventListenerTouchOneByOne* _touchListener = nullptr;
     cocos2d::PhysicsBody* _physicsBody = nullptr;
 
-    bool _jumping = false;
+    int _jumps;
     cocos2d::Vec2 _velocity;
 };
 

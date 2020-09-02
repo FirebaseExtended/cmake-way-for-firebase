@@ -21,8 +21,9 @@ bool PopsicleScene::init() {
     }
 
     auto physicsWorld = this->getPhysicsWorld();
+#ifdef DEBUG_PHYSICS
     physicsWorld->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-    physicsWorld->setGravity(Vec2(0, kGravity));
+#endif
 
     auto director = Director::getInstance();
     auto visibleSize = director->getVisibleSize();

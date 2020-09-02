@@ -12,6 +12,7 @@ static constexpr float kJumpTime = .5;
 static constexpr float kGravity = -2 * kJumpHeight / (kJumpTime * kJumpTime);
 static constexpr float kVelocityChangeForJump = 2 * kJumpHeight / kJumpTime;
 static constexpr float kPlayerSpeed = 200;
+static constexpr int kAirJumps = 1;
 
 PopsiclePlayer *PopsiclePlayer::createWithTexture(Texture2D *texture) {
     auto *player = new(std::nothrow) PopsiclePlayer();
@@ -43,18 +44,9 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
 
     _touchListener->onTouchBegan = [this](Touch *touch, Event *event) {
         log("Touch Began");
-        if (!_jumping) {
-            _jumping = true;
+        if (_jumps > 0) {
+            _jumps--;
             _velocity.y = kVelocityChangeForJump;
-            return true;
-        }
-        return false;
-    };
-
-    _touchListener->onTouchEnded = [this](Touch *touch, Event *event) {
-        log("Touch Ended");
-        if (_jumping) {
-            _jumping = false;
             return true;
         }
         return false;
@@ -65,6 +57,7 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
     eventDispatcher->addEventListenerWithSceneGraphPriority(_touchListener, this);
 
     _velocity.x = kPlayerSpeed;
+    resetJumps();
 
     return true;
 }
@@ -86,6 +79,7 @@ void PopsiclePlayer::update(float delta) {
 
     if (getPositionY() < kGroundLevel) {
         setPositionY(kGroundLevel);
+        resetJumps();
         _velocity.y = 0;
     }
 
@@ -96,4 +90,8 @@ void PopsiclePlayer::cleanup() {
     CC_SAFE_RELEASE(_touchListener);
     CC_SAFE_RELEASE(_physicsBody);
     Sprite::cleanup();
+}
+
+void PopsiclePlayer::resetJumps() {
+    _jumps = kAirJumps + 1;
 }

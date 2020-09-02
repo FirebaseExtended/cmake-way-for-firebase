@@ -5,6 +5,8 @@
 #ifndef PROJ_ANDROID_POPSICLESCENE_H
 #define PROJ_ANDROID_POPSICLESCENE_H
 
+//#define DEBUG_PHYSICS
+
 #include "cocos2d.h"
 #include "PopsiclePlayer.h"
 
