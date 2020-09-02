@@ -14,6 +14,7 @@ public:
     virtual bool initWithTexture(cocos2d::Texture2D *texture) override;
 
     void update(float delta) override;
+    void collidedWithEnemy();
 
     virtual void cleanup() override;
 
@@ -25,6 +26,8 @@ private:
 
     int _jumps;
     cocos2d::Vec2 _velocity;
+
+    bool _collidedWithEnemy = false;
 };
 
 

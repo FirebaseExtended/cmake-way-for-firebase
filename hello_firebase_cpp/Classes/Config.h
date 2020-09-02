@@ -29,6 +29,9 @@ namespace Config {
     // how many times can the player jump in the air
     constexpr int kAirJumps = 1;
 
+    constexpr int kPlayerCollisionCategory = 0x01;
+    constexpr int kEnemyCollisionCategory = 0x02;
+
     // physics variables - don't touch
     // based on the jump height and the jump time, figure out gravity and how strong a jump is
     constexpr float kGravity = -2 * kJumpHeight / (kJumpTime * kJumpTime);

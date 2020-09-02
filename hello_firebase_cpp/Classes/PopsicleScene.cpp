@@ -25,14 +25,14 @@ bool PopsicleScene::init() {
 #endif
     physicsWorld->setGravity(Vec2(0, Config::kGravity));
 
-    auto director = Director::getInstance();
-    auto visibleSize = director->getVisibleSize();
+    auto visibleSize = _director->getVisibleSize();
 
     // load textures
-    auto textureCache = director->getTextureCache();
+    auto textureCache = _director->getTextureCache();
     auto playerTexture = textureCache->addImage("purple.png");
     auto groundTexture = textureCache->addImage("grass-middle.png");
     auto sunTexture = textureCache->addImage("sun.png");
+    auto crabTexture = textureCache->addImage("crab.png");
 
     // create the player
     _player = PopsiclePlayer::createWithTexture(playerTexture);
@@ -47,7 +47,7 @@ bool PopsicleScene::init() {
     _cameraNode = Node::create();
     _cameraNode->retain();
     addChild(_cameraNode);
-    _cameraNode->addChild(camera);
+    camera->setParent(_cameraNode);
     camera->setPosition(Vec2(0, 0));
 
     // add a happy little sun
@@ -63,6 +63,23 @@ bool PopsicleScene::init() {
     // offset the camera by the ground height
     _cameraOffset = Vec2(0, -groundManager->getGroundHeight());
     centerCamera(camera, visibleSize);
+
+    // test crab
+    auto crab = Sprite::createWithTexture(crabTexture);
+    crab->setAnchorPoint(Vec2(0.5f, 0));
+    crab->setPosition(Vec2(visibleSize.width / 2, 0));
+
+    auto crabBody = PhysicsBody::createBox(crab->getContentSize());
+    crabBody->setCategoryBitmask(Config::kEnemyCollisionCategory);
+    crabBody->setContactTestBitmask(-1);
+    crab->addComponent(crabBody);
+
+    addChild(crab);
+
+    auto eventDispatcher = _director->getEventDispatcher();
+    _physicsEventListener = EventListenerPhysicsContact::create();
+    _physicsEventListener->onContactBegin = CC_CALLBACK_1(PopsicleScene::handleCollision, this);
+    eventDispatcher->addEventListenerWithSceneGraphPriority(_physicsEventListener, this);
 
     // start running the level
     scheduleUpdate();
@@ -82,6 +99,13 @@ void PopsicleScene::cleanup() {
     CC_SAFE_RELEASE(_player);
     CC_SAFE_RELEASE(_cameraNode);
 
+    if (_physicsEventListener) {
+        auto eventDispatcher = _director->getEventDispatcher();
+        eventDispatcher->removeEventListener(_physicsEventListener);
+        _physicsEventListener->release();
+        _physicsEventListener = nullptr;
+    }
+
     Node::cleanup();
 }
 
@@ -92,3 +116,16 @@ void PopsicleScene::centerCamera(Camera *camera, const Size &visibleSize) {
     cameraPosition += _cameraOffset;
     _cameraNode->setPosition(cameraPosition);
 }
+
+// cocos uses a signed in, so disable related warnings
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "hicpp-signed-bitwise"
+bool PopsicleScene::handleCollision(PhysicsContact &contact) {
+    int collisionCombined = contact.getShapeA()->getCategoryBitmask() | contact.getShapeB()->getCategoryBitmask();
+    if (collisionCombined == (Config::kPlayerCollisionCategory | Config::kEnemyCollisionCategory)) {
+        // something tagged as the player collided with something tagged as an enemy
+        _player->collidedWithEnemy();
+    }
+    return true;
+}
+#pragma clang diagnostic pop

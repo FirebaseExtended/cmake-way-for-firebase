@@ -30,6 +30,8 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
     _physicsBody = PhysicsBody::createBox(getContentSize());
     _physicsBody->retain();
     _physicsBody->setDynamic(false);
+    _physicsBody->setCategoryBitmask(Config::kPlayerCollisionCategory);
+    _physicsBody->setContactTestBitmask(-1);
     addComponent(_physicsBody);
 
     _touchListener = EventListenerTouchOneByOne::create();
@@ -45,8 +47,7 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
         return false;
     };
 
-    // TODO: refactor this out
-    auto eventDispatcher = Director::getInstance()->getEventDispatcher();
+    auto eventDispatcher = _director->getEventDispatcher();
     eventDispatcher->addEventListenerWithSceneGraphPriority(_touchListener, this);
 
     _velocity.x = Config::kPlayerSpeed;
@@ -56,27 +57,38 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
 }
 
 void PopsiclePlayer::update(float delta) {
-    Vec2 acceleration;
+    if (!_collidedWithEnemy) {
+        Vec2 acceleration;
 
-    // first move by velocity
-    setPosition(getPosition() + _velocity * delta);
+        // first move by velocity
+        setPosition(getPosition() + _velocity * delta);
 
-    // now compute acceleration (from x')
-    // apply gravity
-    if (getPositionY() > 0) {
-        acceleration.y += Config::kGravity;
-    }
+        // now compute acceleration (from x')
+        // apply gravity
+        if (getPositionY() > 0) {
+            acceleration.y += Config::kGravity;
+        }
 
-    // apply acceleration
-    _velocity += acceleration * delta;
+        // apply acceleration
+        _velocity += acceleration * delta;
 
-    if (getPositionY() < Config::kGroundLevel) {
-        setPositionY(Config::kGroundLevel);
-        resetJumps();
-        _velocity.y = 0;
+        if (getPositionY() < Config::kGroundLevel) {
+            setPositionY(Config::kGroundLevel);
+            resetJumps();
+            _velocity.y = 0;
+        }
     }
 
     Node::update(delta);
+}
+
+void PopsiclePlayer::collidedWithEnemy() {
+    _collidedWithEnemy = true;
+    scheduleOnce([this](float) {
+        _physicsBody->setDynamic(true);
+        _physicsBody->setVelocity(_velocity);
+        _physicsBody->setAngularVelocity(100);
+    }, 0, "remove physics");
 }
 
 void PopsiclePlayer::cleanup() {

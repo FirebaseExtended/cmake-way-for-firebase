@@ -29,8 +29,7 @@ bool GroundManager::initWithCameraAndGroundTexture(cocos2d::Camera *camera,
     _groundTexture = texture;
     _groundTexture->retain();
 
-    auto director = Director::getInstance();
-    auto visibleSize = director->getVisibleSize();
+    auto visibleSize = _director->getVisibleSize();
     _screenWidth = visibleSize.width;
     _tileWidth = int(_groundTexture->getContentSize().width * Config::kGroundTileScale);
     _tileCount = int(_screenWidth) % _tileWidth;

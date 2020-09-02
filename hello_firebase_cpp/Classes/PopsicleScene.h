@@ -23,10 +23,12 @@ public:
     CREATE_FUNC(PopsicleScene);
 private:
     void centerCamera(cocos2d::Camera *camera, const cocos2d::Size &visibleSize);
+    bool handleCollision(cocos2d::PhysicsContact& contact);
 
     PopsiclePlayer *_player = nullptr;
     cocos2d::Vec2 _cameraOffset;
     cocos2d::Node *_cameraNode = nullptr;
+    cocos2d::EventListenerPhysicsContact* _physicsEventListener = nullptr;
 };
 
 
