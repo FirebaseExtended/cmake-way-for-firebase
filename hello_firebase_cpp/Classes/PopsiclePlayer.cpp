@@ -6,10 +6,12 @@
 
 USING_NS_CC;
 
-//static constexpr float kPlayerSpeed = 200;
-static constexpr float kPlayerLinearDamping = 1;
-static constexpr float kPlayerAcceleration = 100;
-static constexpr float kJumpAcceleration = 10000;
+static constexpr float kGroundLevel = 0;
+static constexpr float kJumpHeight = 100;
+static constexpr float kJumpTime = .5;
+static constexpr float kGravity = -2 * kJumpHeight / (kJumpTime * kJumpTime);
+static constexpr float kVelocityChangeForJump = 2 * kJumpHeight / kJumpTime;
+static constexpr float kPlayerSpeed = 200;
 
 PopsiclePlayer *PopsiclePlayer::createWithTexture(Texture2D *texture) {
     auto *player = new(std::nothrow) PopsiclePlayer();
@@ -33,30 +35,26 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
 
     _physicsBody = PhysicsBody::createBox(getContentSize());
     _physicsBody->retain();
-//    _physicsBody->setVelocityLimit(kPlayerSpeed);
-    _physicsBody->setLinearDamping(kPlayerLinearDamping);
-    _physicsBody->setRotationEnable(false);
+    _physicsBody->setDynamic(false);
     addComponent(_physicsBody);
 
     _touchListener = EventListenerTouchOneByOne::create();
     _touchListener->retain();
+
     _touchListener->onTouchBegan = [this](Touch *touch, Event *event) {
         log("Touch Began");
-        if (!_jumping && _physicsBody) {
-            _physicsBody->applyForce(Vec2(0, kJumpAcceleration * _physicsBody->getMass()));
-            _physicsBody->setGravityEnable(false);
+        if (!_jumping) {
             _jumping = true;
+            _velocity.y = kVelocityChangeForJump;
             return true;
         }
         return false;
     };
+
     _touchListener->onTouchEnded = [this](Touch *touch, Event *event) {
         log("Touch Ended");
         if (_jumping) {
             _jumping = false;
-            if (_physicsBody) {
-                _physicsBody->setGravityEnable(true);
-            }
             return true;
         }
         return false;
@@ -66,12 +64,30 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
     auto eventDispatcher = Director::getInstance()->getEventDispatcher();
     eventDispatcher->addEventListenerWithSceneGraphPriority(_touchListener, this);
 
+    _velocity.x = kPlayerSpeed;
+
     return true;
 }
 
 void PopsiclePlayer::update(float delta) {
-    auto physicsWorld = getScene()->getPhysicsWorld();
-    _physicsBody->applyForce(Vec2(kPlayerAcceleration * _physicsBody->getMass(), 0));
+    Vec2 acceleration;
+
+    // first move by velocity
+    setPosition(getPosition() + _velocity * delta);
+
+    // now compute acceleration (from x')
+    // apply gravity
+    if (getPositionY() > 0) {
+        acceleration.y += kGravity;
+    }
+
+    // apply acceleration
+    _velocity += acceleration * delta;
+
+    if (getPositionY() < kGroundLevel) {
+        setPositionY(kGroundLevel);
+        _velocity.y = 0;
+    }
 
     Node::update(delta);
 }

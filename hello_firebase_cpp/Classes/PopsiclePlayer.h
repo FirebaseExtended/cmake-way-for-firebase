@@ -22,6 +22,7 @@ private:
     cocos2d::PhysicsBody* _physicsBody = nullptr;
 
     bool _jumping = false;
+    cocos2d::Vec2 _velocity;
 };
 
 
