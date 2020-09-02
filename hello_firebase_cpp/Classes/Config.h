@@ -32,6 +32,12 @@ namespace Config {
     // how fast the player rotates on death to "pop"
     constexpr int kPlayerDeathPop = 50;
 
+    // spawn chance of an enemy appearing in its slot
+    constexpr float kEnemySpawnChance = .25f;
+
+    // how close together enemies can be (in enemy body lengths)
+    constexpr float kEnemySpawnDensity = 1.f;
+
     constexpr int kPlayerCollisionCategory = 0x01;
     constexpr int kEnemyCollisionCategory = 0x02;
 

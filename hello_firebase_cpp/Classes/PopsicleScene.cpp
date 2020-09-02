@@ -68,8 +68,8 @@ bool PopsicleScene::init() {
     // setup enemy spawning
     EnemyManager::Config enemyManagerConfig = {
             .enemyTexture = crabTexture,
-            .spawnChance = 1,
-            .spawnDistance = 5 * crabTexture->getContentSize().width,
+            .spawnChance = Config::kEnemySpawnChance,
+            .spawnDistance = Config::kEnemySpawnDensity * crabTexture->getContentSize().width,
             .camera = camera
     };
     auto enemyManager = EnemyManager::createWithConfig(enemyManagerConfig);
