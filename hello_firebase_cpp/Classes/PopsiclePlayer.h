@@ -12,6 +12,9 @@ public:
     static PopsiclePlayer *createWithTexture(cocos2d::Texture2D *texture);
 
     virtual bool initWithTexture(cocos2d::Texture2D *texture) override;
+
+    void update(float delta) override;
+
     virtual void cleanup() override;
 
 private:

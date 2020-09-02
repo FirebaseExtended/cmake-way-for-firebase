@@ -61,6 +61,7 @@ list(APPEND GAME_SOURCE
         Classes/CupcakePancakeScene.cpp
         Classes/PopsicleScene.cpp
         Classes/PopsiclePlayer.cpp
+        Classes/GroundManager.cpp
         )
 list(APPEND GAME_HEADER
         Classes/AppDelegate.h
@@ -68,6 +69,7 @@ list(APPEND GAME_HEADER
         Classes/CupcakePancakeScene.h
         Classes/PopsicleScene.h
         Classes/PopsiclePlayer.h
+        Classes/GroundManager.h
         )
 
 if (ANDROID)
