@@ -3,10 +3,9 @@
 //
 
 #include "GroundManager.h"
+#include "Config.h"
 
 USING_NS_CC;
-
-static constexpr float kTileScale = 5.f;
 
 GroundManager *GroundManager::createWithCameraAndGroundTexture(cocos2d::Camera *camera,
                                                                cocos2d::Texture2D *texture) {
@@ -33,7 +32,7 @@ bool GroundManager::initWithCameraAndGroundTexture(cocos2d::Camera *camera,
     auto director = Director::getInstance();
     auto visibleSize = director->getVisibleSize();
     _screenWidth = visibleSize.width;
-    _tileWidth = int(_groundTexture->getContentSize().width * kTileScale);
+    _tileWidth = int(_groundTexture->getContentSize().width * Config::kGroundTileScale);
     _tileCount = int(_screenWidth) % _tileWidth;
 
     _groundSprites.reserve(_tileCount);
@@ -73,6 +72,10 @@ void GroundManager::updateGroundTiles() {
 void GroundManager::update(float delta) {
     updateGroundTiles();
     Node::update(delta);
+}
+
+float GroundManager::getGroundHeight() const {
+    return _groundTexture->getContentSize().height * Config::kGroundTileScale;
 }
 
 void GroundManager::cleanup() {

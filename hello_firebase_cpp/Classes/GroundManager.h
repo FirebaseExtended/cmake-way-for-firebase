@@ -17,6 +17,8 @@ public:
 
     void update(float delta) override;
 
+    float getGroundHeight() const;
+
     virtual void cleanup() override;
 
 private:

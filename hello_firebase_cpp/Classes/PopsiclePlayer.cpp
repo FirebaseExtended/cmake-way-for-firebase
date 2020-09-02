@@ -3,16 +3,9 @@
 //
 
 #include "PopsiclePlayer.h"
+#include "Config.h"
 
 USING_NS_CC;
-
-static constexpr float kGroundLevel = 0;
-static constexpr float kJumpHeight = 100;
-static constexpr float kJumpTime = .5;
-static constexpr float kGravity = -2 * kJumpHeight / (kJumpTime * kJumpTime);
-static constexpr float kVelocityChangeForJump = 2 * kJumpHeight / kJumpTime;
-static constexpr float kPlayerSpeed = 200;
-static constexpr int kAirJumps = 1;
 
 PopsiclePlayer *PopsiclePlayer::createWithTexture(Texture2D *texture) {
     auto *player = new(std::nothrow) PopsiclePlayer();
@@ -46,7 +39,7 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
         log("Touch Began");
         if (_jumps > 0) {
             _jumps--;
-            _velocity.y = kVelocityChangeForJump;
+            _velocity.y = Config::kVelocityChangeForJump;
             return true;
         }
         return false;
@@ -56,7 +49,7 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
     auto eventDispatcher = Director::getInstance()->getEventDispatcher();
     eventDispatcher->addEventListenerWithSceneGraphPriority(_touchListener, this);
 
-    _velocity.x = kPlayerSpeed;
+    _velocity.x = Config::kPlayerSpeed;
     resetJumps();
 
     return true;
@@ -71,14 +64,14 @@ void PopsiclePlayer::update(float delta) {
     // now compute acceleration (from x')
     // apply gravity
     if (getPositionY() > 0) {
-        acceleration.y += kGravity;
+        acceleration.y += Config::kGravity;
     }
 
     // apply acceleration
     _velocity += acceleration * delta;
 
-    if (getPositionY() < kGroundLevel) {
-        setPositionY(kGroundLevel);
+    if (getPositionY() < Config::kGroundLevel) {
+        setPositionY(Config::kGroundLevel);
         resetJumps();
         _velocity.y = 0;
     }
@@ -93,5 +86,5 @@ void PopsiclePlayer::cleanup() {
 }
 
 void PopsiclePlayer::resetJumps() {
-    _jumps = kAirJumps + 1;
+    _jumps = Config::kAirJumps + 1;
 }

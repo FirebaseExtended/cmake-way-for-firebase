@@ -70,6 +70,7 @@ list(APPEND GAME_HEADER
         Classes/PopsicleScene.h
         Classes/PopsiclePlayer.h
         Classes/GroundManager.h
+        Classes/Config.h
         )
 
 if (ANDROID)

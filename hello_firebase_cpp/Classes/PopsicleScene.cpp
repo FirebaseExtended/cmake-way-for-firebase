@@ -4,11 +4,9 @@
 
 #include "PopsicleScene.h"
 #include "GroundManager.h"
+#include "Config.h"
 
 USING_NS_CC;
-
-static const auto kCornflowerBlue = Color3B(100, 149, 237);
-static const float kGravity = -200;
 
 cocos2d::Scene *PopsicleScene::createScene() {
     return PopsicleScene::create();
@@ -20,34 +18,41 @@ bool PopsicleScene::init() {
         return false;
     }
 
+    // setup physics, I might take this out?
     auto physicsWorld = this->getPhysicsWorld();
 #ifdef DEBUG_PHYSICS
     physicsWorld->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 #endif
+    physicsWorld->setGravity(Vec2(0, Config::kGravity));
 
     auto director = Director::getInstance();
     auto visibleSize = director->getVisibleSize();
 
+    // load textures
     auto textureCache = director->getTextureCache();
     auto playerTexture = textureCache->addImage("purple.png");
+    auto groundTexture = textureCache->addImage("grass-middle.png");
 
+    // create the player
     _player = PopsiclePlayer::createWithTexture(playerTexture);
     _player->setPosition(Vec2(0.f, 0.f));
     this->addChild(_player);
 
-    auto groundTexture = textureCache->addImage("grass-middle.png");
-    float groundHeight = groundTexture->getContentSize().height *
-                         5;// TODO: grab this from ground manager groundTile->getScale();
 
+    // configure the camera
     auto camera = this->getDefaultCamera();
-    _cameraOffset = Vec2(0, -groundHeight);
-    centerCamera(camera, visibleSize);
     camera->setBackgroundBrush(
-            CameraBackgroundBrush::createColorBrush(Color4F(kCornflowerBlue), 1.f));
+            CameraBackgroundBrush::createColorBrush(Color4F(Config::kCornflowerBlue), 1.f));
 
+    // setup the ground
     auto groundManager = GroundManager::createWithCameraAndGroundTexture(camera, groundTexture);
     addChild(groundManager);
 
+    // offset the camera by the ground height
+    _cameraOffset = Vec2(0, -groundManager->getGroundHeight());
+    centerCamera(camera, visibleSize);
+
+    // start running the level
     scheduleUpdate();
     return true;
 }
@@ -69,7 +74,7 @@ void PopsicleScene::cleanup() {
 
 void PopsicleScene::centerCamera(Camera *camera, const Size &visibleSize) {
     Vec2 cameraPosition;
-    cameraPosition.x += _player->getPositionX() +  visibleSize.width / 4;
+    cameraPosition.x += _player->getPositionX() + visibleSize.width / 4;
     cameraPosition.y += visibleSize.height / 2;
     cameraPosition += _cameraOffset;
     camera->setPosition(cameraPosition);
