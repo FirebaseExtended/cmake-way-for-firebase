@@ -8,6 +8,7 @@
 USING_NS_CC;
 
 static const auto kCornflowerBlue = Color3B(100, 149, 237);
+static const float kGravity = -200;
 
 cocos2d::Scene *PopsicleScene::createScene() {
     return PopsicleScene::create();
@@ -21,7 +22,7 @@ bool PopsicleScene::init() {
 
     auto physicsWorld = this->getPhysicsWorld();
     physicsWorld->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-    physicsWorld->setGravity(Vec2(0, -98.f));
+    physicsWorld->setGravity(Vec2(0, kGravity));
 
     auto director = Director::getInstance();
     auto visibleSize = director->getVisibleSize();

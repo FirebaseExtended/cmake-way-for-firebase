@@ -6,8 +6,10 @@
 
 USING_NS_CC;
 
-static constexpr float kPlayerSpeed = 200;
+//static constexpr float kPlayerSpeed = 200;
+static constexpr float kPlayerLinearDamping = 1;
 static constexpr float kPlayerAcceleration = 100;
+static constexpr float kJumpAcceleration = 10000;
 
 PopsiclePlayer *PopsiclePlayer::createWithTexture(Texture2D *texture) {
     auto *player = new(std::nothrow) PopsiclePlayer();
@@ -31,7 +33,9 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
 
     _physicsBody = PhysicsBody::createBox(getContentSize());
     _physicsBody->retain();
-    _physicsBody->setVelocityLimit(kPlayerSpeed);
+//    _physicsBody->setVelocityLimit(kPlayerSpeed);
+    _physicsBody->setLinearDamping(kPlayerLinearDamping);
+    _physicsBody->setRotationEnable(false);
     addComponent(_physicsBody);
 
     _touchListener = EventListenerTouchOneByOne::create();
@@ -39,7 +43,7 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
     _touchListener->onTouchBegan = [this](Touch *touch, Event *event) {
         log("Touch Began");
         if (!_jumping && _physicsBody) {
-            _physicsBody->applyForce(Vec2(0, 2000 * _physicsBody->getMass()));
+            _physicsBody->applyForce(Vec2(0, kJumpAcceleration * _physicsBody->getMass()));
             _physicsBody->setGravityEnable(false);
             _jumping = true;
             return true;
@@ -66,7 +70,9 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
 }
 
 void PopsiclePlayer::update(float delta) {
+    auto physicsWorld = getScene()->getPhysicsWorld();
     _physicsBody->applyForce(Vec2(kPlayerAcceleration * _physicsBody->getMass(), 0));
+
     Node::update(delta);
 }
 
