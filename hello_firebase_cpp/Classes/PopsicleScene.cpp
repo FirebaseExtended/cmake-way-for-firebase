@@ -32,6 +32,7 @@ bool PopsicleScene::init() {
     auto textureCache = director->getTextureCache();
     auto playerTexture = textureCache->addImage("purple.png");
     auto groundTexture = textureCache->addImage("grass-middle.png");
+    auto sunTexture = textureCache->addImage("sun.png");
 
     // create the player
     _player = PopsiclePlayer::createWithTexture(playerTexture);
@@ -43,6 +44,17 @@ bool PopsicleScene::init() {
     auto camera = this->getDefaultCamera();
     camera->setBackgroundBrush(
             CameraBackgroundBrush::createColorBrush(Color4F(Config::kCornflowerBlue), 1.f));
+    _cameraNode = Node::create();
+    _cameraNode->retain();
+    addChild(_cameraNode);
+    _cameraNode->addChild(camera);
+    camera->setPosition(Vec2(0, 0));
+
+    // add a happy little sun
+    auto sunSprite = Sprite::createWithTexture(sunTexture);
+    sunSprite->setAnchorPoint(Vec2(1, 1));
+    sunSprite->setPosition(visibleSize / 2);
+    _cameraNode->addChild(sunSprite);
 
     // setup the ground
     auto groundManager = GroundManager::createWithCameraAndGroundTexture(camera, groundTexture);
@@ -68,6 +80,7 @@ void PopsicleScene::update(float delta) {
 
 void PopsicleScene::cleanup() {
     CC_SAFE_RELEASE(_player);
+    CC_SAFE_RELEASE(_cameraNode);
 
     Node::cleanup();
 }
@@ -77,5 +90,5 @@ void PopsicleScene::centerCamera(Camera *camera, const Size &visibleSize) {
     cameraPosition.x += _player->getPositionX() + visibleSize.width / 4;
     cameraPosition.y += visibleSize.height / 2;
     cameraPosition += _cameraOffset;
-    camera->setPosition(cameraPosition);
+    _cameraNode->setPosition(cameraPosition);
 }

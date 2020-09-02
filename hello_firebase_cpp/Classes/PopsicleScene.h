@@ -26,6 +26,7 @@ private:
 
     PopsiclePlayer *_player = nullptr;
     cocos2d::Vec2 _cameraOffset;
+    cocos2d::Node *_cameraNode = nullptr;
 };
 
 

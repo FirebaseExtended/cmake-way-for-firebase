@@ -49,8 +49,14 @@ bool GroundManager::initWithCameraAndGroundTexture(cocos2d::Camera *camera,
     return true;
 }
 
+/*
+ * Reusing the available tiles, this function places them on screen in such a way that it mimics an
+ * infinite scrolling plane even though it's recycling a number of fixed tiles.
+ */
 void GroundManager::updateGroundTiles() {
-    float startPosition = _camera->getPositionX() - (_screenWidth / 2);
+    // cocos doesn't appear to cache the world transform, so this is a redundant calculation
+    auto worldPosition = _camera->convertToWorldSpaceAR(Vec2::ZERO);
+    float startPosition = worldPosition.x - (_screenWidth / 2);
 
     // find the start tile
     int tile = int(startPosition) / _tileCount;
