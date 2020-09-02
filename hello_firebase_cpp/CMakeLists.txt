@@ -57,20 +57,22 @@ endif ()
 # add cross-platforms source files and header files 
 list(APPEND GAME_SOURCE
         Classes/AppDelegate.cpp
-        Classes/LoginScene.cpp
         Classes/CupcakePancakeScene.cpp
-        Classes/PopsicleScene.cpp
-        Classes/PopsiclePlayer.cpp
+        Classes/EnemyManager.cpp
         Classes/GroundManager.cpp
+        Classes/LoginScene.cpp
+        Classes/PopsiclePlayer.cpp
+        Classes/PopsicleScene.cpp
         )
 list(APPEND GAME_HEADER
         Classes/AppDelegate.h
-        Classes/LoginScene.h
-        Classes/CupcakePancakeScene.h
-        Classes/PopsicleScene.h
-        Classes/PopsiclePlayer.h
-        Classes/GroundManager.h
         Classes/Config.h
+        Classes/CupcakePancakeScene.h
+        Classes/EnemyManager.h
+        Classes/GroundManager.h
+        Classes/LoginScene.h
+        Classes/PopsiclePlayer.h
+        Classes/PopsicleScene.h
         )
 
 if (ANDROID)

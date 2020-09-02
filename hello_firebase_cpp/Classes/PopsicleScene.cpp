@@ -5,6 +5,7 @@
 #include "PopsicleScene.h"
 #include "GroundManager.h"
 #include "Config.h"
+#include "EnemyManager.h"
 
 USING_NS_CC;
 
@@ -64,17 +65,15 @@ bool PopsicleScene::init() {
     _cameraOffset = Vec2(0, -groundManager->getGroundHeight());
     centerCamera(camera, visibleSize);
 
-    // test crab
-    auto crab = Sprite::createWithTexture(crabTexture);
-    crab->setAnchorPoint(Vec2(0.5f, 0));
-    crab->setPosition(Vec2(visibleSize.width / 2, 0));
-
-    auto crabBody = PhysicsBody::createBox(crab->getContentSize());
-    crabBody->setCategoryBitmask(Config::kEnemyCollisionCategory);
-    crabBody->setContactTestBitmask(-1);
-    crab->addComponent(crabBody);
-
-    addChild(crab);
+    // setup enemy spawning
+    EnemyManager::Config enemyManagerConfig = {
+            .enemyTexture = crabTexture,
+            .spawnChance = 1,
+            .spawnDistance = 5 * crabTexture->getContentSize().width,
+            .camera = camera
+    };
+    auto enemyManager = EnemyManager::createWithConfig(enemyManagerConfig);
+    addChild(enemyManager);
 
     auto eventDispatcher = _director->getEventDispatcher();
     _physicsEventListener = EventListenerPhysicsContact::create();

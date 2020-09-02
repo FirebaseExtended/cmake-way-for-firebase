@@ -87,7 +87,7 @@ void PopsiclePlayer::collidedWithEnemy() {
     scheduleOnce([this](float) {
         _physicsBody->setDynamic(true);
         _physicsBody->setVelocity(_velocity);
-        _physicsBody->setAngularVelocity(100);
+        _physicsBody->setAngularVelocity(Config::kPlayerDeathPop);
     }, 0, "remove physics");
 }
 

@@ -29,6 +29,9 @@ namespace Config {
     // how many times can the player jump in the air
     constexpr int kAirJumps = 1;
 
+    // how fast the player rotates on death to "pop"
+    constexpr int kPlayerDeathPop = 50;
+
     constexpr int kPlayerCollisionCategory = 0x01;
     constexpr int kEnemyCollisionCategory = 0x02;
 
