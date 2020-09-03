@@ -23,8 +23,11 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
-#include "LoginScene.h"
 #include "PopsicleScene.h"
+#include "MainMenuScene.h"
+
+// TODO: this is a thing for the user to do
+#include <firebase/app.h>
 
 // #define USE_AUDIO_ENGINE 1
 
@@ -108,11 +111,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
+    // TODO: this is something a user should do
     firebase::App::Create(JniHelper::getEnv(), JniHelper::getActivity());
 
     // create a scene. it's an autorelease object
-//    auto scene = LoginScene::createScene();
-    auto scene = PopsicleScene::createScene();
+    auto scene = MainMenuScene::createScene();
 
     // run
     director->runWithScene(scene);

@@ -60,7 +60,7 @@ list(APPEND GAME_SOURCE
         Classes/EnemyManager.cpp
         Classes/GameOverMenu.cpp
         Classes/GroundManager.cpp
-        Classes/LoginScene.cpp
+        Classes/MainMenuScene.cpp
         Classes/PopsiclePlayer.cpp
         Classes/PopsicleScene.cpp
         )
@@ -70,7 +70,7 @@ list(APPEND GAME_HEADER
         Classes/EnemyManager.h
         Classes/GameOverMenu.h
         Classes/GroundManager.h
-        Classes/LoginScene.h
+        Classes/MainMenuScene.h
         Classes/PopsiclePlayer.h
         Classes/PopsicleScene.h
         )
