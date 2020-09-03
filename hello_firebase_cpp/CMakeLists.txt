@@ -59,6 +59,7 @@ list(APPEND GAME_SOURCE
         Classes/AppDelegate.cpp
         Classes/CupcakePancakeScene.cpp
         Classes/EnemyManager.cpp
+        Classes/GameOverMenu.cpp
         Classes/GroundManager.cpp
         Classes/LoginScene.cpp
         Classes/PopsiclePlayer.cpp
@@ -69,6 +70,7 @@ list(APPEND GAME_HEADER
         Classes/Config.h
         Classes/CupcakePancakeScene.h
         Classes/EnemyManager.h
+        Classes/GameOverMenu.h
         Classes/GroundManager.h
         Classes/LoginScene.h
         Classes/PopsiclePlayer.h

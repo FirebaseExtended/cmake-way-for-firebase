@@ -29,6 +29,8 @@ private:
     cocos2d::Vec2 _cameraOffset;
     cocos2d::Node *_cameraNode = nullptr;
     cocos2d::EventListenerPhysicsContact* _physicsEventListener = nullptr;
+
+    bool _gameOver = false;
 };
 
 

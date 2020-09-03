@@ -6,6 +6,7 @@
 #include "GroundManager.h"
 #include "Config.h"
 #include "EnemyManager.h"
+#include "GameOverMenu.h"
 
 USING_NS_CC;
 
@@ -37,6 +38,7 @@ bool PopsicleScene::init() {
 
     // create the player
     _player = PopsiclePlayer::createWithTexture(playerTexture);
+    _player->retain();
     _player->setPosition(Vec2(0.f, 0.f));
     this->addChild(_player);
 
@@ -79,6 +81,7 @@ bool PopsicleScene::init() {
     _physicsEventListener = EventListenerPhysicsContact::create();
     _physicsEventListener->onContactBegin = CC_CALLBACK_1(PopsicleScene::handleCollision, this);
     eventDispatcher->addEventListenerWithSceneGraphPriority(_physicsEventListener, this);
+    _physicsEventListener->retain();
 
     // start running the level
     scheduleUpdate();
@@ -90,6 +93,13 @@ void PopsicleScene::update(float delta) {
     auto director = Director::getInstance();
 
     centerCamera(camera, director->getVisibleSize());
+
+    if (!_gameOver && _player->didCollideWithEnemy()) {
+        auto gameOverMenu = GameOverMenu::create();
+        _cameraNode->addChild(gameOverMenu);
+        gameOverMenu->setPosition(Vec2::ZERO);
+        _gameOver = true;
+    }
 
     Node::update(delta);
 }
@@ -105,7 +115,7 @@ void PopsicleScene::cleanup() {
         _physicsEventListener = nullptr;
     }
 
-    Node::cleanup();
+    Scene::cleanup();
 }
 
 void PopsicleScene::centerCamera(Camera *camera, const Size &visibleSize) {

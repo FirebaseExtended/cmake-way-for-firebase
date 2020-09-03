@@ -25,6 +25,7 @@
 #include "LoginScene.h"
 
 #include "CupcakePancakeScene.h"
+#include "Config.h"
 
 USING_NS_CC;
 
@@ -47,9 +48,9 @@ bool LoginScene::init() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto label = Label::createWithTTF("Signing In...", "fonts/Marker Felt.ttf", 24);
+    auto label = Label::createWithTTF("Signing In...", Config::kMenuFont, 24);
     if (label == nullptr) {
-        problemLoading("'fonts/Marker Felt.ttf'");
+        problemLoading(Config::kMenuFont);
     } else {
         // position the label on the center of the screen
         label->setPosition(Vec2(origin.x + visibleSize.width / 2,
@@ -94,7 +95,7 @@ bool LoginScene::init() {
 
     auto continueButton = ui::Button::create("button.png", "button_pressed.png",
                                              "button_disabled.png");
-    continueButton->setTitleFontName("fonts/Marker Felt.ttf");
+    continueButton->setTitleFontName(Config::kMenuFont);
     continueButton->setTitleText("Continue");
     continueButton->setAnchorPoint(Vec2(.5f, 0.f));
     continueButton->setPosition(Vec2(visibleSize.width / 2 + origin.x, origin.y));

@@ -41,6 +41,8 @@ namespace Config {
     constexpr int kPlayerCollisionCategory = 0x01;
     constexpr int kEnemyCollisionCategory = 0x02;
 
+    constexpr const char *kMenuFont = "fonts/Marker Felt.ttf";
+
     // physics variables - don't touch
     // based on the jump height and the jump time, figure out gravity and how strong a jump is
     constexpr float kGravity = -2 * kJumpHeight / (kJumpTime * kJumpTime);
