@@ -71,7 +71,7 @@ float EnemyManager::computeCameraRightEdge() const {
 
 void EnemyManager::spawnEnemy(const Vec2& position) {
     auto enemy = Sprite::createWithTexture(_config.enemyTexture);
-    enemy->setAnchorPoint(Vec2(0.5f, 0));
+    enemy->setAnchorPoint(Vec2(0, 0));
     enemy->setPosition(position);
     auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
     enemyBody->setCategoryBitmask(::Config::kEnemyCollisionCategory);
