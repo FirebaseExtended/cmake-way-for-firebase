@@ -9,9 +9,9 @@
 
 class PopsiclePlayer : public cocos2d::Sprite {
 public:
-    static PopsiclePlayer *createWithTexture(cocos2d::Texture2D *texture);
+    static PopsiclePlayer *createWithTextureAndGameOverListener(cocos2d::Texture2D *texture, const std::function<void()> &onGameOver);
 
-    virtual bool initWithTexture(cocos2d::Texture2D *texture) override;
+    virtual bool initWithTextureAndGameOverListener(cocos2d::Texture2D *textur, const std::function<void()> &onGameOveer);
 
     void update(float delta) override;
 
@@ -26,6 +26,7 @@ private:
 
     cocos2d::EventListenerTouchOneByOne *_touchListener = nullptr;
     cocos2d::PhysicsBody *_physicsBody = nullptr;
+    std::function<void()> _onGameOver;
 
     int _jumps;
     cocos2d::Vec2 _velocity;

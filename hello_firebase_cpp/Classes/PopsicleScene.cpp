@@ -37,7 +37,8 @@ bool PopsicleScene::init() {
     auto crabTexture = textureCache->addImage("crab.png");
 
     // create the player
-    _player = PopsiclePlayer::createWithTexture(playerTexture);
+    _player = PopsiclePlayer::createWithTextureAndGameOverListener(playerTexture, std::bind(
+            &PopsicleScene::gameOver, this));
     _player->retain();
     _player->setPosition(Vec2(0.f, 0.f));
     this->addChild(_player);
@@ -95,13 +96,6 @@ void PopsicleScene::update(float delta) {
 
     centerCamera(camera, director->getVisibleSize());
 
-    if (!_gameOver && _player->didCollideWithEnemy()) {
-        auto gameOverMenu = GameOverMenu::create();
-        _cameraNode->addChild(gameOverMenu);
-        gameOverMenu->setPosition(Vec2::ZERO);
-        _gameOver = true;
-    }
-
     Node::update(delta);
 }
 
@@ -130,12 +124,27 @@ void PopsicleScene::centerCamera(Camera *camera, const Size &visibleSize) {
 // cocos uses a signed in, so disable related warnings
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "hicpp-signed-bitwise"
+
 bool PopsicleScene::handleCollision(PhysicsContact &contact) {
-    int collisionCombined = contact.getShapeA()->getCategoryBitmask() | contact.getShapeB()->getCategoryBitmask();
+    int collisionCombined =
+            contact.getShapeA()->getCategoryBitmask() | contact.getShapeB()->getCategoryBitmask();
     if (collisionCombined == (Config::kPlayerCollisionCategory | Config::kEnemyCollisionCategory)) {
         // something tagged as the player collided with something tagged as an enemy
         _player->collidedWithEnemy();
     }
     return true;
 }
+
+void PopsicleScene::gameOver() {
+    // handle a game over
+    if (!_gameOver) {
+        auto gameOverMenu = GameOverMenu::create();
+        _cameraNode->addChild(gameOverMenu);
+        gameOverMenu->setPosition(Vec2::ZERO);
+        _gameOver = true;
+
+        // TODO: register an event here!
+    }
+}
+
 #pragma clang diagnostic pop

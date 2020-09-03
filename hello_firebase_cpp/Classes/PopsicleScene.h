@@ -24,6 +24,7 @@ public:
 private:
     void centerCamera(cocos2d::Camera *camera, const cocos2d::Size &visibleSize);
     bool handleCollision(cocos2d::PhysicsContact& contact);
+    void gameOver();
 
     PopsiclePlayer *_player = nullptr;
     cocos2d::Vec2 _cameraOffset;

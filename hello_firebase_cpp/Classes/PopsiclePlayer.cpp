@@ -7,9 +7,10 @@
 
 USING_NS_CC;
 
-PopsiclePlayer *PopsiclePlayer::createWithTexture(Texture2D *texture) {
+PopsiclePlayer *PopsiclePlayer::createWithTextureAndGameOverListener(cocos2d::Texture2D *texture,
+                                                                     const std::function<void()> &onGameOver) {
     auto *player = new(std::nothrow) PopsiclePlayer();
-    if (player && player->initWithTexture(texture)) {
+    if (player && player->initWithTextureAndGameOverListener(texture, onGameOver)) {
         player->autorelease();
         return player;
     }
@@ -18,12 +19,15 @@ PopsiclePlayer *PopsiclePlayer::createWithTexture(Texture2D *texture) {
     return nullptr;
 }
 
-bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
+bool PopsiclePlayer::initWithTextureAndGameOverListener(Texture2D *texture,
+                                                        const std::function<void()> &onGameOver) {
     CCASSERT(texture, "Texture must never be null");
 
     if (!Sprite::initWithTexture(texture)) {
         return false;
     }
+
+    _onGameOver = onGameOver;
 
     this->setAnchorPoint(Vec2(.5f, 0.f));
 
@@ -83,15 +87,18 @@ void PopsiclePlayer::update(float delta) {
 }
 
 void PopsiclePlayer::collidedWithEnemy() {
-    _collidedWithEnemy = true;
-    unscheduleUpdate(); // stop running player logic
+    if (!_collidedWithEnemy) {
+        _collidedWithEnemy = true;
+        unscheduleUpdate(); // stop running player logic
+        _onGameOver();
 
-    // we can't set dynamic to false mid physics step. So schedule it for later
-    scheduleOnce([this](float) {
-        _physicsBody->setDynamic(true);
-        _physicsBody->setVelocity(_velocity);
-        _physicsBody->setAngularVelocity(Config::kPlayerDeathPop);
-    }, 0, "remove physics");
+        // we can't set dynamic to false mid physics step. So schedule it for later
+        scheduleOnce([this](float) {
+            _physicsBody->setDynamic(true);
+            _physicsBody->setVelocity(_velocity);
+            _physicsBody->setAngularVelocity(Config::kPlayerDeathPop);
+        }, 0, "remove physics");
+    }
 }
 
 void PopsiclePlayer::cleanup() {
