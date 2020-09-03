@@ -17,6 +17,12 @@ namespace Config {
     // where the ground is on the y axis
     constexpr float kGroundLevel = 0;
 
+    // how many spare tiles over the minimum do you need
+    // must be at least +2 (one for rounding errors, one to have one tile of buffer to avoid
+    // the last one clipping out. Additional tiles act as a platform for spawned objects)
+    constexpr int kGroundSpareTiles = 4;
+    static_assert(kGroundSpareTiles >= 2, "Must be at least +2 to avoid visual clipping");
+
     // when the player jumps, how many units high they go
     constexpr float kJumpHeight = 100;
 
@@ -37,6 +43,9 @@ namespace Config {
 
     // how close together enemies can be (in enemy body lengths)
     constexpr float kEnemySpawnDensity = 1.f;
+
+    // inset the collision box a small bit to make the game more fun
+    constexpr float kEnemyCrabHorizontalCollisionScale = .5f;
 
     constexpr int kPlayerCollisionCategory = 0x01;
     constexpr int kEnemyCollisionCategory = 0x02;

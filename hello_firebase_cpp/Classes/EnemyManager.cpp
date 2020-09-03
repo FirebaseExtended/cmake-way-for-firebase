@@ -73,7 +73,9 @@ void EnemyManager::spawnEnemy(const Vec2& position) {
     auto enemy = Sprite::createWithTexture(_config.enemyTexture);
     enemy->setAnchorPoint(Vec2(0, 0));
     enemy->setPosition(position);
-    auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
+    Size collisionVolume = enemy->getContentSize();
+    collisionVolume.width *= ::Config::kEnemyCrabHorizontalCollisionScale;
+    auto enemyBody = PhysicsBody::createBox(collisionVolume);
     enemyBody->setCategoryBitmask(::Config::kEnemyCollisionCategory);
     enemyBody->setContactTestBitmask(-1);
     enemy->addComponent(enemyBody);

@@ -32,7 +32,7 @@ bool GroundManager::initWithCameraAndGroundTexture(cocos2d::Camera *camera,
     auto visibleSize = _director->getVisibleSize();
     _screenWidth = visibleSize.width;
     _tileWidth = int(_groundTexture->getContentSize().width * Config::kGroundTileScale);
-    _tileCount = int(_screenWidth) % _tileWidth;
+    _tileCount = (int(_screenWidth) / _tileWidth) + Config::kGroundSpareTiles;
 
     _groundSprites.reserve(_tileCount);
     for (int i = 0; i < _tileCount; i++) {
@@ -56,6 +56,7 @@ void GroundManager::updateGroundTiles() {
     // cocos doesn't appear to cache the world transform, so this is a redundant calculation
     auto worldPosition = _camera->convertToWorldSpaceAR(Vec2::ZERO);
     float startPosition = worldPosition.x - (_screenWidth / 2);
+    startPosition += _tileWidth / 2;
 
     // find the start tile
     int tile = int(startPosition) / _tileCount;
