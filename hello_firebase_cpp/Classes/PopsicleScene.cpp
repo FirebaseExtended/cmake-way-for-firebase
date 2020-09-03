@@ -158,13 +158,14 @@ void PopsicleScene::gameOver() {
         auto gameOverMenu = GameOverMenu::create();
         _cameraNode->addChild(gameOverMenu);
         gameOverMenu->setPosition(Vec2::ZERO);
-        _gameOver = true;
 
         // TODO: register an event here!
         {
             using namespace firebase;
             analytics::LogEvent(analytics::kEventLevelEnd, "distance", _lastDistance);
         }
+
+        _gameOver = true;
     }
 }
 
