@@ -24,8 +24,8 @@
 
 #include "LoginScene.h"
 
-#include "CupcakePancakeScene.h"
 #include "Config.h"
+#include "PopsicleScene.h"
 
 USING_NS_CC;
 
@@ -106,5 +106,5 @@ bool LoginScene::init() {
 }
 
 void LoginScene::continueClicked() {
-    Director::getInstance()->pushScene(CupcakePancakeScene::createScene());
+    _director->pushScene(PopsicleScene::createScene());
 }

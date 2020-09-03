@@ -57,7 +57,6 @@ endif ()
 # add cross-platforms source files and header files 
 list(APPEND GAME_SOURCE
         Classes/AppDelegate.cpp
-        Classes/CupcakePancakeScene.cpp
         Classes/EnemyManager.cpp
         Classes/GameOverMenu.cpp
         Classes/GroundManager.cpp
@@ -68,7 +67,6 @@ list(APPEND GAME_SOURCE
 list(APPEND GAME_HEADER
         Classes/AppDelegate.h
         Classes/Config.h
-        Classes/CupcakePancakeScene.h
         Classes/EnemyManager.h
         Classes/GameOverMenu.h
         Classes/GroundManager.h

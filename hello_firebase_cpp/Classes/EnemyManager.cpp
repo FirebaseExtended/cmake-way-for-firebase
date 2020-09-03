@@ -25,11 +25,14 @@ bool EnemyManager::initWithConfig(const EnemyManager::Config &config) {
     _config = config;
     _config.camera->retain();
 
-    // schedule the first update
+    // schedule the first update, this avoids a redundant branch every frame
     scheduleOnce([this](float) {
+        // only start spawning objects off screen, so wait for the first frame for the camera to be
+        // ready and cache that value
         float rightEdge = computeCameraRightEdge();
         _lastRightEdge = rightEdge;
 
+        // start normal updates
         scheduleUpdate();
     }, 0, "first update");
     return true;

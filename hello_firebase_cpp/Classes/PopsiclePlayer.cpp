@@ -27,6 +27,7 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
 
     this->setAnchorPoint(Vec2(.5f, 0.f));
 
+    // setup physics - we'll only use this for collision detection until we "ragdoll" at the end
     _physicsBody = PhysicsBody::createBox(getContentSize());
     _physicsBody->retain();
     _physicsBody->setDynamic(false);
@@ -34,11 +35,10 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
     _physicsBody->setContactTestBitmask(-1);
     addComponent(_physicsBody);
 
+    // Listen for a player tapping on the screen
     _touchListener = EventListenerTouchOneByOne::create();
     _touchListener->retain();
-
     _touchListener->onTouchBegan = [this](Touch *touch, Event *event) {
-        log("Touch Began");
         if (_jumps > 0) {
             _jumps--;
             _velocity.y = Config::kVelocityChangeForJump;
@@ -46,10 +46,10 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
         }
         return false;
     };
-
     auto eventDispatcher = _director->getEventDispatcher();
     eventDispatcher->addEventListenerWithSceneGraphPriority(_touchListener, this);
 
+    // start running!
     _velocity.x = Config::kPlayerSpeed;
     resetJumps();
 
@@ -57,26 +57,26 @@ bool PopsiclePlayer::initWithTexture(Texture2D *texture) {
 }
 
 void PopsiclePlayer::update(float delta) {
-    if (!_collidedWithEnemy) {
-        Vec2 acceleration;
+    // WARNING!!! this won't run after we collide with an enemy
 
-        // first move by velocity
-        setPosition(getPosition() + _velocity * delta);
+    Vec2 acceleration;
 
-        // now compute acceleration (from x')
-        // apply gravity
-        if (getPositionY() > 0) {
-            acceleration.y += Config::kGravity;
-        }
+    // first move by velocity
+    setPosition(getPosition() + _velocity * delta);
 
-        // apply acceleration
-        _velocity += acceleration * delta;
+    // now compute acceleration (from x')
+    // apply gravity
+    if (getPositionY() > 0) {
+        acceleration.y += Config::kGravity;
+    }
 
-        if (getPositionY() < Config::kGroundLevel) {
-            setPositionY(Config::kGroundLevel);
-            resetJumps();
-            _velocity.y = 0;
-        }
+    // apply acceleration
+    _velocity += acceleration * delta;
+
+    if (getPositionY() < Config::kGroundLevel) {
+        setPositionY(Config::kGroundLevel);
+        resetJumps();
+        _velocity.y = 0;
     }
 
     Node::update(delta);
@@ -84,6 +84,9 @@ void PopsiclePlayer::update(float delta) {
 
 void PopsiclePlayer::collidedWithEnemy() {
     _collidedWithEnemy = true;
+    unscheduleUpdate(); // stop running player logic
+
+    // we can't set dynamic to false mid physics step. So schedule it for later
     scheduleOnce([this](float) {
         _physicsBody->setDynamic(true);
         _physicsBody->setVelocity(_velocity);

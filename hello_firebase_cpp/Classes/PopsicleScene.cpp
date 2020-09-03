@@ -20,7 +20,7 @@ bool PopsicleScene::init() {
         return false;
     }
 
-    // setup physics, I might take this out?
+    // setup physics
     auto physicsWorld = this->getPhysicsWorld();
 #ifdef DEBUG_PHYSICS
     physicsWorld->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
@@ -77,11 +77,12 @@ bool PopsicleScene::init() {
     auto enemyManager = EnemyManager::createWithConfig(enemyManagerConfig);
     addChild(enemyManager);
 
+    // setup collision handling
     auto eventDispatcher = _director->getEventDispatcher();
     _physicsEventListener = EventListenerPhysicsContact::create();
+    _physicsEventListener->retain();
     _physicsEventListener->onContactBegin = CC_CALLBACK_1(PopsicleScene::handleCollision, this);
     eventDispatcher->addEventListenerWithSceneGraphPriority(_physicsEventListener, this);
-    _physicsEventListener->retain();
 
     // start running the level
     scheduleUpdate();
