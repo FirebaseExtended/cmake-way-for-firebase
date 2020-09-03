@@ -2,6 +2,7 @@
 // Created by Patrick Martin on 9/1/20.
 //
 
+#include <iomanip>
 #include "PopsicleScene.h"
 #include "GroundManager.h"
 #include "Config.h"
@@ -85,6 +86,17 @@ bool PopsicleScene::init() {
     _physicsEventListener->onContactBegin = CC_CALLBACK_1(PopsicleScene::handleCollision, this);
     eventDispatcher->addEventListenerWithSceneGraphPriority(_physicsEventListener, this);
 
+    // create a label to show how far a player's gone
+    _distanceLabel = Label::createWithTTF("Distance: 0", Config::kMenuFont, 24);
+    _distanceLabel->retain();
+    _distanceLabel->setAnchorPoint(Vec2(0, 1));
+    _distanceLabel->setPosition(
+            Vec2(-visibleSize.width / 2, visibleSize.height / 2) + Config::kDistanceLabelOffset);
+    _cameraNode->addChild(_distanceLabel);
+
+    // set the start distance for the camera
+    _cameraStartDistance = _cameraNode->getPosition().x;
+
     // start running the level
     scheduleUpdate();
     return true;
@@ -96,12 +108,15 @@ void PopsicleScene::update(float delta) {
 
     centerCamera(camera, director->getVisibleSize());
 
+    updateDistanceLabel();
+
     Node::update(delta);
 }
 
 void PopsicleScene::cleanup() {
     CC_SAFE_RELEASE(_player);
     CC_SAFE_RELEASE(_cameraNode);
+    CC_SAFE_RELEASE(_distanceLabel);
 
     if (_physicsEventListener) {
         auto eventDispatcher = _director->getEventDispatcher();
@@ -144,6 +159,16 @@ void PopsicleScene::gameOver() {
         _gameOver = true;
 
         // TODO: register an event here!
+    }
+}
+
+void PopsicleScene::updateDistanceLabel() {
+    float distance = (_cameraNode->getPosition().x - _cameraStartDistance) * Config::kDistanceScale;
+    if (distance > _lastDistance) {
+        std::stringstream distanceString;
+        distanceString << "Distance: " << std::fixed << std::setprecision(2) << distance;
+        _distanceLabel->setString(distanceString.str());
+        _lastDistance = distance;
     }
 }
 

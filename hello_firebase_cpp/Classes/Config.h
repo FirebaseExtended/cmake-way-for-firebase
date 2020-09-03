@@ -43,6 +43,12 @@ namespace Config {
 
     constexpr const char *kMenuFont = "fonts/Marker Felt.ttf";
 
+    // offset of the distance label from the upper left
+    const cocos2d::Vec2 kDistanceLabelOffset = cocos2d::Vec2(16, -16);
+
+    // when drawing the distance, scale it down by some amount
+    constexpr float kDistanceScale = .01f;
+
     // physics variables - don't touch
     // based on the jump height and the jump time, figure out gravity and how strong a jump is
     constexpr float kGravity = -2 * kJumpHeight / (kJumpTime * kJumpTime);
