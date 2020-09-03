@@ -16,6 +16,8 @@ public:
 
     virtual bool init() override;
 
+    void onEnter() override;
+
     void update(float delta) override;
 
     void cleanup() override;

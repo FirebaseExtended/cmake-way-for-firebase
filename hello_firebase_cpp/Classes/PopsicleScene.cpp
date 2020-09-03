@@ -3,6 +3,8 @@
 //
 
 #include <iomanip>
+#include <firebase/analytics.h>
+#include <firebase/analytics/event_names.h>
 #include "PopsicleScene.h"
 #include "GroundManager.h"
 #include "Config.h"
@@ -159,6 +161,10 @@ void PopsicleScene::gameOver() {
         _gameOver = true;
 
         // TODO: register an event here!
+        {
+            using namespace firebase;
+            analytics::LogEvent(analytics::kEventLevelEnd, "distance", _lastDistance);
+        }
     }
 }
 
@@ -170,6 +176,14 @@ void PopsicleScene::updateDistanceLabel() {
         _distanceLabel->setString(distanceString.str());
         _lastDistance = distance;
     }
+}
+
+void PopsicleScene::onEnter() {
+    // TODO: level started event
+    using namespace firebase;
+    analytics::LogEvent(analytics::kEventLevelStart);
+
+    Node::onEnter();
 }
 
 #pragma clang diagnostic pop

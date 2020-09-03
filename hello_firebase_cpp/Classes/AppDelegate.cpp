@@ -28,6 +28,7 @@
 
 // TODO: this is a thing for the user to do
 #include <firebase/app.h>
+#include <firebase/analytics.h>
 
 // #define USE_AUDIO_ENGINE 1
 
@@ -112,7 +113,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // TODO: this is something a user should do
-    firebase::App::Create(JniHelper::getEnv(), JniHelper::getActivity());
+    {
+        using namespace firebase;
+        auto app = App::Create(JniHelper::getEnv(), JniHelper::getActivity());
+        analytics::Initialize(*app);
+    }
 
     // create a scene. it's an autorelease object
     auto scene = MainMenuScene::createScene();
