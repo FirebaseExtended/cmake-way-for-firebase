@@ -58,6 +58,15 @@ namespace Config {
     // when drawing the distance, scale it down by some amount
     constexpr float kDistanceScale = .01f;
 
+    // how many enemies are in a group
+    static constexpr int kSpawnQueueSize = 3;
+
+    // minimum number of enemies in a group
+    static constexpr int kMinEnemiesToSpawn = 1;
+
+    // maximum number of enemies in a group
+    static constexpr int kMaxEnemiesToSpawn = 2;
+
     // physics variables - don't touch
     // based on the jump height and the jump time, figure out gravity and how strong a jump is
     constexpr float kGravity = -2 * kJumpHeight / (kJumpTime * kJumpTime);

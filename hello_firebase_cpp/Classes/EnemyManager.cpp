@@ -38,15 +38,34 @@ bool EnemyManager::initWithConfig(const EnemyManager::Config &config) {
     return true;
 }
 
+/*!
+ * Enemies are spawned during the update. Some quick notes on the algorithm.
+ *
+ * Enemies are spawned in a logical queue. First space is divided up into enemy slots. When a slot
+ * becomes visible, an enemy object is spawned into it if the current queue dictates that it should
+ * contain an enemy.
+ *
+ * The queue is of a fixed size and is front-loaded with enemies. That is if the size is 4 enemies
+ * and 2 enemies in this queue are rolled, the first two slots will have enemies and the second two
+ * will not.
+ *
+ * This means that if the queue size, index in the queue, and enemies in the queue are known, we can
+ * decide at any given point if an enemy needs to be spawned. That is what the math below is doing,
+ * and it is entirely configurable in @file Config.h
+ */
 void EnemyManager::update(float delta) {
+    if (_spawnIndex >= ::Config::kSpawnQueueSize) {
+        _enemiesToSpawn = _randomDistribution(_randomGenerator);
+        _spawnIndex = 0;
+        log("Will spawn %d enemies", _enemiesToSpawn);
+    }
     float rightEdge = computeCameraRightEdge();
     float lastEnemyIndex = floorf(_lastRightEdge / _config.spawnDistance);
     float realEnemyIndex = rightEdge / _config.spawnDistance;
     float enemyIndex = floorf(realEnemyIndex);
     if (enemyIndex > lastEnemyIndex) {
-        // try to spawn
-        float spawnChance = _randomDistribution(_randomGenerator);
-        if (spawnChance <= _config.spawnChance) {
+        log("Checking to spawn... index: %d -- of %d", _spawnIndex, _enemiesToSpawn);
+        if (_spawnIndex++ < _enemiesToSpawn) {
             spawnEnemy(Vec2(enemyIndex * _config.spawnDistance, ::Config::kGroundLevel));
         }
     }
