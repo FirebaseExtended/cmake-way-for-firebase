@@ -56,7 +56,7 @@ void GroundManager::updateGroundTiles() {
     // cocos doesn't appear to cache the world transform, so this is a redundant calculation
     auto worldPosition = _camera->convertToWorldSpaceAR(Vec2::ZERO);
     float startPosition = worldPosition.x - (_screenWidth / 2);
-    startPosition += _tileWidth / 2;
+    startPosition += float(_tileWidth) / 2;
 
     // find the start tile
     int tile = int(startPosition) / _tileCount;
@@ -70,7 +70,7 @@ void GroundManager::updateGroundTiles() {
 
     // this can be faster without the mod
     for (int i = 0;
-         i < _tileCount; i++, tile = (tile + 1) % _tileCount, tilePosition += _tileWidth) {
+         i < _tileCount; i++, tile = (tile + 1) % _tileCount, tilePosition += float(_tileWidth)) { // NOLINT(cert-flp30-c)
         _groundSprites[i]->setPosition(Vec2(tilePosition, 0));
     }
 }
