@@ -13,6 +13,8 @@
 // limitations under the License.
 
 #include <iomanip>
+#include <firebase/analytics.h>
+#include <firebase/analytics/event_names.h>
 #include "PopsicleScene.h"
 #include "GroundManager.h"
 #include "Config.h"
@@ -167,7 +169,11 @@ void PopsicleScene::gameOver() {
         _cameraNode->addChild(gameOverMenu);
         gameOverMenu->setPosition(Vec2::ZERO);
 
-        // TODO: log kEventLevelEnd here!
+        // TODO: register an event here!
+        {
+            using namespace firebase;
+            analytics::LogEvent(analytics::kEventLevelEnd, "distance", _lastDistance);
+        }
 
         _gameOver = true;
     }
@@ -184,7 +190,9 @@ void PopsicleScene::updateDistanceLabel() {
 }
 
 void PopsicleScene::onEnter() {
-    // TODO: log kEventLevelStart here
+    // TODO: level started event
+    using namespace firebase;
+    analytics::LogEvent(analytics::kEventLevelStart);
 
     Node::onEnter();
 }
