@@ -5,3 +5,4 @@ proj.android/app/.cxx
 /build
 /mac-build/
 /.idea/
+/proj.android/app/google-services.json
