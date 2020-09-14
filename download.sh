@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-pushd `dirname $0`
+pushd `dirname $0`/third_party
 curl https://dl.google.com/firebase/sdk/cpp/firebase_cpp_sdk_6.15.1.zip > firebase_cpp_sdk.zip &&
 unzip -q firebase_cpp_sdk.zip &&
 rm firebase_cpp_sdk.zip

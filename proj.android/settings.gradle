@@ -1,4 +1,4 @@
 include ':libcocos2dx'
-project(':libcocos2dx').projectDir = new File(settingsDir, '../cocos2d/cocos/platform/android/libcocos2dx')
+project(':libcocos2dx').projectDir = new File(settingsDir, '../third_party/cocos2d/cocos/platform/android/libcocos2dx')
 include ':popsicle_runner'
 project(':popsicle_runner').projectDir = new File(settingsDir, 'app')
