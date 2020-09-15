@@ -38,9 +38,9 @@ include(2d/CMakeLists.txt)
 include(3d/CMakeLists.txt)
 include(platform/CMakeLists.txt)
 include(physics/CMakeLists.txt)
-include(physics3d/CMakeLists.txt)
+#include(physics3d/CMakeLists.txt)
 include(math/CMakeLists.txt)
-include(navmesh/CMakeLists.txt)
+#include(navmesh/CMakeLists.txt)
 include(renderer/CMakeLists.txt)
 include(base/CMakeLists.txt)
 include(ui/CMakeLists.txt)
@@ -48,9 +48,9 @@ include(network/CMakeLists.txt)
 include(audio/CMakeLists.txt)
 
 # default value for cocos2dx extensions modules build
-option(BUILD_EDITOR_COCOSTUDIO "Build editor support for cocostudio" ON)
+option(BUILD_EDITOR_COCOSTUDIO "Build editor support for cocostudio" OFF)
 option(BUILD_EDITOR_SPINE "Build editor support for spine" OFF)
-option(BUILD_EXTENSIONS "Build extension library" ON)
+option(BUILD_EXTENSIONS "Build extension library" OFF)
 
 if(BUILD_EDITOR_COCOSTUDIO)
     include(editor-support/cocostudio/CMakeLists.txt)
@@ -71,9 +71,9 @@ set(COCOS_HEADER cocos2d.h
     ${COCOS_3D_HEADER}
     ${COCOS_PLATFORM_HEADER}
     ${COCOS_PHYSICS_HEADER}
-    ${COCOS_PHYSICS3D_HEADER}
+#    ${COCOS_PHYSICS3D_HEADER}
     ${COCOS_MATH_HEADER}
-    ${COCOS_NAVMESH_HEADER}
+#    ${COCOS_NAVMESH_HEADER}
     ${COCOS_RENDERER_HEADER}
     ${COCOS_BASE_HEADER}
     ${COCOS_AUDIO_HEADER}
@@ -88,9 +88,9 @@ set(COCOS_SRC cocos2d.cpp
     ${COCOS_3D_SRC}
     ${COCOS_PLATFORM_SRC}
     ${COCOS_PHYSICS_SRC}
-    ${COCOS_PHYSICS3D_SRC}
+#    ${COCOS_PHYSICS3D_SRC}
     ${COCOS_MATH_SRC}
-    ${COCOS_NAVMESH_SRC}
+#    ${COCOS_NAVMESH_SRC}
     ${COCOS_RENDERER_SRC}
     ${COCOS_BASE_SRC}
     ${COCOS_AUDIO_SRC}
