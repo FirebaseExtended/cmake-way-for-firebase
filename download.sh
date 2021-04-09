@@ -14,7 +14,7 @@
 # limitations under the License.
 
 pushd `dirname $0`/third_party
-curl https://dl.google.com/firebase/sdk/cpp/firebase_cpp_sdk_6.15.1.zip > firebase_cpp_sdk.zip &&
+curl https://dl.google.com/firebase/sdk/cpp/firebase_cpp_sdk_7.1.1.zip > firebase_cpp_sdk.zip &&
 unzip -q firebase_cpp_sdk.zip &&
 rm firebase_cpp_sdk.zip
 popd
